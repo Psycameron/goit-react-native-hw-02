@@ -37,10 +37,16 @@ export default function LoginScreen() {
   //   }
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(true);
+  const [isFocusedInput, setIsFocusedInput] = useState("");
 
   const keyboardHide = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
+  };
+
+  const handleInputFocus = (inputName) => {
+    setIsFocusedInput(inputName);
   };
 
   return (
@@ -58,18 +64,33 @@ export default function LoginScreen() {
             >
               <Text style={styles.title}>Увійти</Text>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  isFocusedInput === "email" && styles.inputFocused,
+                ]}
                 placeholder="Адреса електронної пошти"
                 onFocus={() => {
                   setIsShowKeyboard(true);
+                  handleInputFocus("email");
+                }}
+                onBlur={() => {
+                  handleInputFocus("");
                 }}
               />
               <TextInput
-                style={[styles.input, styles.lastInput]}
+                style={[
+                  styles.input,
+                  styles.lastInput,
+                  isFocusedInput === "password" && styles.inputFocused,
+                ]}
                 placeholder="Пароль"
                 secureTextEntry={true}
                 onFocus={() => {
                   setIsShowKeyboard(true);
+                  handleInputFocus("password");
+                }}
+                onBlur={() => {
+                  handleInputFocus("");
                 }}
               />
               <TouchableOpacity style={styles.button} activeOpacity={0.7}>
@@ -98,6 +119,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   formWrapper: {
+    alignItems: "center",
+
     paddingHorizontal: 16,
     paddingTop: 32,
     paddingBottom: 144,
@@ -109,7 +132,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 33,
 
-    // fontFamily: "Roboto",
+    fontFamily: "Roboto",
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
@@ -118,6 +141,7 @@ const styles = StyleSheet.create({
     color: "#212121",
   },
   input: {
+    width: "100%",
     height: 50,
     padding: 16,
 
@@ -130,10 +154,25 @@ const styles = StyleSheet.create({
   lastInput: {
     marginBottom: 43,
   },
+  inputFocused: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#FF6C00",
+  },
+  showPass: {
+    position: "absolute",
+    top: 308,
+    right: 32,
+
+    fontFamily: "Roboto",
+    lineHeight: 19,
+    fontSize: 16,
+    color: "#1B4371",
+  },
   button: {
     alignItems: "center",
     justifyContent: "center",
 
+    width: "100%",
     height: 51,
     marginBottom: 16,
 
@@ -141,7 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   textButton: {
-    // fontFamily: "Roboto",
+    fontFamily: "Roboto",
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
@@ -149,7 +188,7 @@ const styles = StyleSheet.create({
   },
   link: {},
   textLink: {
-    // fontFamily: "Roboto",
+    fontFamily: "Roboto",
 
     fontWeight: 400,
     fontSize: 16,
